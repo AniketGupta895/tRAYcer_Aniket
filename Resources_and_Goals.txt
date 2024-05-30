@@ -1,0 +1,15 @@
+Project source:
+https://raytracing.github.io/
+
+C++ resources:
+https://en.cppreference.com/w/
+https://cplusplus.com/
+
+Makefile resources:
+https://makefiletutorial.com/
+
+Git resources:
+https://docs.github.com/en/get-started/using-git/about-git
+
+The most important resource of all:
+GOOGLE(+ tinge of GPT)
