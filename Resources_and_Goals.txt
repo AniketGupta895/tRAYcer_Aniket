@@ -13,3 +13,11 @@ https://docs.github.com/en/get-started/using-git/about-git
 
 The most important resource of all:
 GOOGLE(+ tinge of GPT)
+
+
+Goal till next meet: (3rd/4th June)
+i) implement and understand the ray tracing in one weekend book till before “The vec3 Class”…(not much). I expect many doubts so feel free to ask.
+
+ii) Make a GitHub account if you don’t have one. Try to learn as much as you can about git from the rescourse. No need to learn about branches etc. now.  Make a git repository in your local device and whatever small milestones you keep achieving, commit and push them onto the GitHub repository online. Will see your respository soon and give you some “Git ethics”
+
+iii) finish till before the chapter 23 (inheritance) in the book. It won’t take time just skim over. For anyone facing difficulty in doing this, don’t worry, please DM me.
