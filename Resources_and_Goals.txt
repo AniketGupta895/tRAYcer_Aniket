@@ -21,3 +21,15 @@ i) implement and understand the ray tracing in one weekend book till before “T
 ii) Make a GitHub account if you don’t have one. Try to learn as much as you can about git from the rescourse. No need to learn about branches etc. now.  Make a git repository in your local device and whatever small milestones you keep achieving, commit and push them onto the GitHub repository online. Will see your respository soon and give you some “Git ethics”
 
 iii) finish till before the chapter 23 (inheritance) in the book. It won’t take time just skim over. For anyone facing difficulty in doing this, don’t worry, please DM me.
+
+
+This week’s target (5th - 12th June):
+For the people who are starting/ in the mid of vec3 class:
+1) Complete the ray tracing book till image 2
+2) Complete Abhiram Ranade chapter 23…And try to apply what you learn through the book in your own code. 
+3) Start learning Makefile and forming a Makefile.(check description for the link)
+
+For people already done with vec3 class:
+1) Complete till image 5.(I am hoping for some doubts here) 
+2) Complete chapter 23 of Abhiram Rahnade.
+3) Complete the tutorial and write your own Makefile.
