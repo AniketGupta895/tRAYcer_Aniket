@@ -1,19 +1,15 @@
-files = startingmessage program testvaluemaker
+files = program
 
 execute: $(files)
-	./testvaluemaker > testfile.txt
-	./program < testfile.txt > output.txt
+	./program > image1.ppm
 
-program: vec3.cpp
-	echo "Compiling vec3"
-	g++ vec3.cpp -o program
+program: testimage.cpp
+	echo "Compiling testimage.cpp"
+	g++ testimage.cpp -o program
 
-testvaluemaker: testvaluemaker.cpp
-	echo "Compiling testvaluemaker"
-	g++ testvaluemaker.cpp -o testvaluemaker
-
-startingmessage:
-	echo "These are the targets:" $(files)
+# testvaluemaker: testvaluemaker.cpp
+# 	echo "Compiling testvaluemaker"
+# 	g++ testvaluemaker.cpp -o testvaluemaker
 
 clean: 
 	rm -f program testvaluemaker testfile.txt output.txt
