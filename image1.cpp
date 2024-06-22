@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 #include "vec3.h"
 #define PIXElS_X 1080
 #define PIXELS_Y 720

@@ -1,8 +1,6 @@
-// //This program will create a  gradient background as in image2. It will add a sphere at and the pixels at which the sphere should appear will be turned red. Very simple shading function, it does not take into account surface normals or anything other than simple a boolean of whether the sphere exists at that point or not.
-
 #include "inclusions.h"
 
-vec3 image4shader(ray const &lightray, sphere const& s){
+vec3 multisphereshader(ray const &lightray, hittable_list hittables){
     double scaled_y = map(lightray.direction().unit_vector().y(), -1, 1, 0, 1);
     colour gradientcolour1(1, 1, 1);
     colour gradientcolour2(0.3, 0.5, 1);
@@ -11,7 +9,7 @@ vec3 image4shader(ray const &lightray, sphere const& s){
     colour spherecolour(0, 0, 0);
     hit_record hitrec;
     bool hit = false;
-    if (s.hit(lightray, 0, INFINITY, hitrec)) {
+    if (hittables.hit(lightray, 0, INFINITY, hitrec)) {
         hit = true;
         spherecolour = map(hitrec.normal, -1, 1, 0, 1);
     }
@@ -26,13 +24,16 @@ int main(){
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    double radius;
-    vec3 centre;
-    cin >> centre >> radius;
-    sphere s(centre, radius);
+    int number_of_spheres; cin >> number_of_spheres;
+    hittable_list listofspheres;
+    for (int i = 0; i < number_of_spheres; i++){
+        vec3 centre;
+        double radius;
+        cin >> centre >> radius;
+        listofspheres.add(shared_ptr<sphere>(new sphere(centre, radius)));
+    }
 
     double viewport_height = 2;
-
     vec3 horizontal(viewport_height * aspect_ratio, 0, 0);
     vec3 vertical(0, viewport_height, 0);
     vec3 origin(0, 0, 0);
@@ -50,8 +51,7 @@ int main(){
     for (int j = ny - 1; j >=0; j--){
         for (int i = 0; i < nx; i++){
             ray cameraray(origin, left_bottom + i * delta_u + j * delta_v - origin);
-            write_colour(image4shader(cameraray, s));
+            write_colour(multisphereshader(cameraray, listofspheres));
         }
     }
 }
- 

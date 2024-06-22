@@ -18,9 +18,9 @@ execute: $(files)
 	./tester > testfile.txt && ./image4 < testfile.txt > sampleimages/sampleimage15.ppm
 	./tester > testfile.txt && ./image4 < testfile.txt > sampleimages/sampleimage16.ppm
 
-image3: image4.cpp
+image4: image4.cpp
 	echo "Compiling image4.cpp"
-	g++ image4.cpp -o image4
+	g++ -std=c++20 image4.cpp -o image4
 
 # testvaluemaker: testvaluemaker.cpp
 # 	echo "Compiling testvaluemaker"

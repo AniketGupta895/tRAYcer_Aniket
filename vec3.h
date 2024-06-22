@@ -1,10 +1,6 @@
 #ifndef VEC3_H
 #define VEC3_H
 
-#include <math.h>
-#include <iostream>
-using namespace std;
-
 class vec3 {
     double v[3];
 public:
