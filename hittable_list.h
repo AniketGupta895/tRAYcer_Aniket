@@ -17,15 +17,15 @@ public:
         objects.clear();
     }
 
-    bool hit(ray const& lightray, double tmin, double tmax, hit_record& rec) const override{
+    bool hit(ray const& lightray, interval ray_interval, hit_record& rec) const override{
         hit_record temprec;
         bool hit_an_object = false;
-        double nearest_t = tmax;
+        interval temp_interval = ray_interval;
         
         for (int i = 0; i < objects.size(); i++){
-            if (objects[i]->hit(lightray, tmin, nearest_t, temprec)){
+            if (objects[i]->hit(lightray, temp_interval, temprec)){
                 hit_an_object = true;
-                nearest_t = temprec.t;
+                temp_interval.max = temprec.t;
                 rec = temprec;
             }
         }

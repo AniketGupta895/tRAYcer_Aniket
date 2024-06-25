@@ -16,7 +16,7 @@ public:
 
 class hittable{
 public:
-    virtual bool hit(ray const& lightray, double tmin, double tmax, hit_record& rec) const = 0;
+    virtual bool hit(ray const& lightray, interval ray_interval, hit_record& rec) const = 0;
     virtual ~hittable() = default;
 };
 

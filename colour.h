@@ -8,8 +8,20 @@ inline vec3 mix_colour(vec3 const &colour1, vec3 const &colour2, double const t)
     return (1.0f - t) * colour1 + t * colour2;
 }
 
-void write_colour(colour const &pixelcolour){
-    cout << (vec3(pixelcolour.r(), pixelcolour.g(), pixelcolour.b()) * 255.99).make_int() << endl;
+void gamma_correct(colour &col, double gamma){
+    col = colour(
+        pow(col.x(), 1 / gamma),
+        pow(col.y(), 1 / gamma),
+        pow(col.z(), 1 / gamma)        
+    );
+}
+
+void write_colour(colour const &pixelcolour, double gamma = 2){
+    static const interval intensity(0.000, 0.999);
+    colour to_write = pixelcolour;
+    gamma_correct(to_write, gamma);
+    to_write = intensity.clamp(to_write);
+    cout << (to_write * 256).make_int() << endl;
 }
 
 #endif

@@ -7,6 +7,19 @@ public:
     vec3(double x, double y, double z);
     vec3();
 
+    vec3(vec3 const& other){
+        v[0] = other.x();
+        v[1] = other.y();
+        v[2] = other.z();
+    }
+
+    vec3& operator=(vec3 const& other){
+        v[0] = other.x();
+        v[1] = other.y();
+        v[2] = other.z();
+        return *this;
+    }
+
     double x() const;
     double y() const;
     double z() const;
@@ -169,6 +182,14 @@ inline vec3 cartesian_to_polar(vec3 const& cartesianvector){
     double y = cartesianvector[1];
     double z = cartesianvector[2];
     return vec3(sqrt(x * x + y * y + z * z), atan2(-z, x), atan2(y, sqrt(x * x + z * z)));
+}
+
+inline vec3 random_vector(double min, double max){
+    return vec3(
+        randomdouble(min, max),
+        randomdouble(min, max),
+        randomdouble(min, max)
+        );
 }
 
 #endif // VEC3_H

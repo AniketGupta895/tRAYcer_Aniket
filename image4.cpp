@@ -11,7 +11,7 @@ vec3 image4shader(ray const &lightray, sphere const& s){
     colour spherecolour(0, 0, 0);
     hit_record hitrec;
     bool hit = false;
-    if (s.hit(lightray, 0, INFINITY, hitrec)) {
+    if (s.hit(lightray, 0, infinity, hitrec)) {
         hit = true;
         spherecolour = map(hitrec.normal, -1, 1, 0, 1);
     }
@@ -49,7 +49,7 @@ int main(){
     vec3 left_bottom_pixel = left_bottom + vec3(0.5 * delta_u.x(), -0.5 * delta_v.y(), 0);
     for (int j = ny - 1; j >=0; j--){
         for (int i = 0; i < nx; i++){
-            ray cameraray(origin, left_bottom + i * delta_u + j * delta_v - origin);
+            ray cameraray(origin, left_bottom_pixel + i * delta_u + j * delta_v - origin);
             write_colour(image4shader(cameraray, s));
         }
     }

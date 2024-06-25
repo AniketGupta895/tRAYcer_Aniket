@@ -6,7 +6,7 @@ class sphere : public hittable{
     double radius;
 public: 
     sphere(vec3 Centre, double Radius): radius(Radius), centre(Centre) {};
-    bool hit(ray const& lightray, double tmin, double tmax, hit_record& rec) const override{
+    bool hit(ray const& lightray, interval ray_interval, hit_record& rec) const override{
         //Ray is of form A + t * B
         const vec3 A = lightray.origin();
         const vec3 B = lightray.direction();
@@ -19,9 +19,9 @@ public:
         if (discriminant < 0) return false;
 
         double t_striked = (-b - sqrt(discriminant)) / (2 * a);
-        if (t_striked < tmin || t_striked > tmax) {
+        if (!ray_interval.surrounds(t_striked)) {
             t_striked = (-b + sqrt(discriminant)) / (2 * a);
-            if (t_striked < tmin || t_striked > tmax) return false;
+            if (!ray_interval.surrounds(t_striked)) return false;
         }
 
         rec.t = t_striked;

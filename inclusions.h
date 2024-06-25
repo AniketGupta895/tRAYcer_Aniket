@@ -1,37 +1,62 @@
+#ifndef INCLUSIONS_H
+#define INCLUSIONS_H
+
 #include <iostream>
 using namespace std;
 
-#include "vec3.h"
-#include "ray.h"
-#include "colour.h"
-#include "hittable.h"
+// #define NS_PRIVATE_IMPLEMENTATION
+// #define CA_PRIVATE_IMPLEMENTATION
+// #define MTL_PRIVATE_IMPLEMENTATION
+
+#include <math.h>
 #include <vector>
 #include <memory>
+#include <limits>
+#include <stdlib.h>
+#include <time.h>
+// #include <Metal/Metal.hpp>
+// #include <QuartzCore/QuartzCore.hpp>
+// #include <Foundation/Foundation.hpp>
+
 
 using std::shared_ptr;
 using std::make_shared;
 
+#define PIXELS_X 1920
+#define PIXELS_Y 1080
+#define PI M_PI
+#define infinity numeric_limits<double>::infinity()
+
+inline double radians_to_degrees(double radians){
+    return radians * PI / 180;
+}
+
+inline double degrees_to_radians(double degrees){
+    return degrees * 180 / PI;
+}
+
+inline void initrand(){
+    srand(time(0));
+    int* i = new int;
+    *i = rand();
+    delete i;
+}
+
+inline double randomdouble(double left = 0, double right = 1){
+    double normalised_rand = rand() / (RAND_MAX + 1.0);
+    return left + normalised_rand * (right - left);
+}
+
+
+#include "vec3.h"
+#include "interval.h"
+#include "ray.h"
+#include "colour.h"
+#include "hittable.h"
 #include "hittable_list.h"
 #include "sphere.h"
+#include "map_values.h"
+#include "camera.h"
 
-#define PIXELS_X 800
-#define PIXELS_Y 600
-
-
-double map(double const &value, double old_left, double old_right, double new_left, double new_right){
-    double new_value = value - old_left;
-    new_value *= (new_right - new_left) / (old_right - old_left);
-    new_value += new_left;
-    return new_value;
-}
-
-inline vec3 map(vec3 const &vector, double old_left, double old_right, double new_left, double new_right){
-    return vec3(
-    map(vector.x(), old_left, old_right, new_left, new_right), 
-    map(vector.y(), old_left, old_right, new_left, new_right),
-    map(vector.z(), old_left, old_right, new_left, new_right)
-    );
-}
-
-
+#endif
 
