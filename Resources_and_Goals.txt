@@ -33,3 +33,17 @@ For people already done with vec3 class:
 1) Complete till image 5.(I am hoping for some doubts here) 
 2) Complete chapter 23 of Abhiram Rahnade.
 3) Complete the tutorial and write your own Makefile.
+
+This week’s target:
+I) Complete till image 16
+Learn about smart pointers.
+II) Learn about smart pointers(I am sharing a resource)
+III) Complete chapter 24 from Abhiram rahnade
+IV) Learn about fstream and in general streams(sharing a resource)
+
+https://stackoverflow.com/questions/106508/what-is-a-smart-pointer-and-when-should-i-use-one
+https://www.geeksforgeeks.org/smart-pointers-cpp/amp/
+Book: Andrei Alexandrescu - Modern C++ Design
+You can find plenty of articles online about fstream,
+https://www.tutorialspoint.com/cplusplus/cpp_files_streams.htm
+<sharing this one of you are too lazy to find one>
