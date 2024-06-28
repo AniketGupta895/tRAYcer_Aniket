@@ -4,7 +4,7 @@
 using namespace std;
 
 double randomdouble(double left, double right){
-    double normalised_rand = double(rand()) / RAND_MAX;
+    double normalised_rand = rand() / (RAND_MAX + 1.0);
     return left + normalised_rand * (right - left);
 }
 
