@@ -191,7 +191,7 @@ inline vec3 cartesian_to_polar(vec3 const& cartesianvector){
     return vec3(sqrt(x * x + y * y + z * z), atan2(-z, x), atan2(y, sqrt(x * x + z * z)));
 }
 
-inline vec3 random_vector(double min, double max){
+inline vec3 random_vector(double min = 0, double max = 1){
     return vec3(
         randomdouble(min, max),
         randomdouble(min, max),

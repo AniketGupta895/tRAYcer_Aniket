@@ -35,6 +35,7 @@ class dielectric: public material{
     double reflectance(double refractive_index, double costheta);
 public:
     dielectric(colour const& albedo, double refractive_index): albedo(albedo), refractive_index(refractive_index){}
+    dielectric(double refractive_index): albedo(vec3(1, 1, 1)), refractive_index(refractive_index){}
     bool scatter(const ray& lightray, ray& scattered_ray, hit_record &hitrec, colour &attenuation) override;
 };
 

@@ -17,7 +17,7 @@ public:
 class hittable{
 public:
     virtual bool hit(ray const& lightray, interval ray_interval, hit_record& rec) const = 0;
-    virtual ~hittable() = default;
+    // virtual ~hittable() = default;
 };
 
 //inclusion of dependencies

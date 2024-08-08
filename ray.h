@@ -40,6 +40,19 @@ vec3 vector_in_unit_sphere(){
     return newvector.unit_vector();
 }
 
+vec3 vector_in_unit_disk() {
+    vec3 newvector = vec3(randomdouble(-1, 1), randomdouble(-1, 1), 0);
+    bool vector_ok = false;
+    while (!vector_ok){
+        if (newvector.length() > 1){
+            newvector = vec3(randomdouble(-1, 1), randomdouble(-1, 1), 0);
+            continue;
+        }
+        vector_ok = true;
+    }
+    return newvector;
+}
+
 void make_ray_on_hemisphere(vec3 &vector, const vec3& normal){
     if (dot(vector, normal) < 0) vector = -vector;
 }

@@ -10,7 +10,7 @@ public:
     inline void add(shared_ptr<hittable> object){objects.push_back(object);}
     inline void clear(){objects.clear();}
     bool hit(ray const& lightray, interval ray_interval, hit_record& rec) const override;
-    ~hittable_list() override = default;
+    // ~hittable_list() override = default;
 };
 
 /*---------------------------------------------

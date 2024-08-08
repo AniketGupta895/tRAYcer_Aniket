@@ -3,31 +3,30 @@
 int main(){
     hittable_list world;
 
-    shared_ptr<material> material1 = make_shared<metal>(colour(0.9, 0.9, 0.9));
-    shared_ptr<material> material2 = make_shared<lambertian>(colour(0.3, 0.1, 0.6));
-    shared_ptr<material> material3 = make_shared<lambertian>(colour(0.4, 0.6, 0.9));
-    shared_ptr<material> material4 = make_shared<metal>(colour(0.5, 0.7, 0.6), 0.5);
-    shared_ptr<material> material5 = make_shared<metal>(colour(1, 1, 1), 0);
-    shared_ptr<material> material6 = make_shared<metal>(colour(0.3, 0.6, 0.2), 0.7);
-    shared_ptr<material> material7 = make_shared<metal>(colour(0, 0.6, 0.6), 0.3);
-    shared_ptr<material> material8 = make_shared<dielectric>(colour(1, 1, 1), 1.5);
-    shared_ptr<material> material9 = make_shared<dielectric>(colour(1, 1, 1), 1 / 1.33);
-    shared_ptr<material> material10 = make_shared<dielectric>(colour(1, 1, 1), 1 / 1.5);
+    auto material_ground = make_shared<lambertian>(colour(0.8, 0.8, 0.0));
+    auto material_center = make_shared<lambertian>(colour(0.1, 0.2, 0.5));
+    auto material_left   = make_shared<dielectric>(colour(1, 1 ,1), 1.50);
+    auto material_bubble = make_shared<dielectric>(colour(1, 1 ,1), 1.00 / 1.50);
+    auto material_right  = make_shared<metal>(colour(0.8, 0.6, 0.2), 1.0);
 
-    world.add(make_shared<sphere>(vec3(-1,0.5,-6), 0.5, material1));
-    world.add(make_shared<sphere>(vec3(0,0,-6), 0.5, material9));
-    world.add(make_shared<sphere>(vec3(1,0,-6), 0.5, material3));
-    world.add(make_shared<sphere>(vec3(0.5, -0.1, -5), 0.2, material8));
-    world.add(make_shared<sphere>(vec3(-0.8,0.8,-5.6), 0.3, material6));
-    world.add(make_shared<sphere>(vec3(0,1.3,-6), 0.7, material7));
-    world.add(make_shared<sphere>(vec3(0,-100.5,-6), 100, material2));
-    world.add(make_shared<sphere>(vec3(-0.3, 0.35, -4.7), 0.5, material8));
-    world.add(make_shared<sphere>(vec3(-0.3, 0.35, -4.7), 0.3, material10));
+    world.add(make_shared<sphere>(vec3( 0.0, -100.5, -1.0), 100.0, material_ground));
+    world.add(make_shared<sphere>(vec3( 0.0,    0.0, -1.2),   0.5, material_center));
+    world.add(make_shared<sphere>(vec3(-1.0,    0.0, -1.0),   0.5, material_left));
+    world.add(make_shared<sphere>(vec3(-1.0,    0.0, -1.0),   0.4, material_bubble));
+    world.add(make_shared<sphere>(vec3( 1.0,    0.0, -1.0),   0.5, material_right));
+
 
     initrand();
+    
 
     camera world_camera;
-    world_camera.max_depth = 40;
-    world_camera.samples_per_pixel = 200;
+    world_camera.max_depth = 20;
+    world_camera.samples_per_pixel = 10;
+    world_camera.vfov     = 20;
+    world_camera.camera_origin = vec3(-2,2,1);
+    world_camera.lookat   = vec3(0,0,-1);
+    world_camera.v_up      = vec3(0,1,0);
+    world_camera.defocus_angle = 10.0;
+    world_camera.focus_dist    = 3.4;
     world_camera.render(world);
 }

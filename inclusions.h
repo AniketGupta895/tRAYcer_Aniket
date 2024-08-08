@@ -2,6 +2,7 @@
 #define INCLUSIONS_H
 
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 // #define NS_PRIVATE_IMPLEMENTATION
@@ -15,6 +16,7 @@ using namespace std;
 #include <stdlib.h>
 #include <time.h>
 #include <assert.h>
+#include <chrono>
 // #include <Metal/Metal.hpp>
 // #include <QuartzCore/QuartzCore.hpp>
 // #include <Foundation/Foundation.hpp>
@@ -29,10 +31,10 @@ using std::make_shared;
 #define infinity numeric_limits<double>::infinity()
 
 inline double radians_to_degrees(double radians){
-    return radians * PI / 180;
+    return radians * 180 / PI;
 }
 inline double degrees_to_radians(double degrees){
-    return degrees * 180 / PI;
+    return degrees * PI / 180;
 }
 
 inline void initrand(){

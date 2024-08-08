@@ -5,27 +5,34 @@ class camera{
 public:
     int nx = PIXELS_X;
     int ny = PIXELS_Y;
-    double viewport_height = 2;
-    double focal_length = 4;
+    double viewport_height;
+    double vfov = 27;
+    double focal_length = 1;
     int samples_per_pixel = 10;
     int max_depth = 10;
-    float reflectance = 0.5;
+    vec3 v_up= vec3(0, 1, 0);
+    vec3 camera_origin = vec3(-3, 3, 1);
+    vec3 lookat = vec3(0, 0, -6);
+    double roll = 0;
+    double defocus_angle = 0;
+    double focus_dist = 10;
 
     void render(const hittable& world);
-    void renderNreflectances(const hittable& world, int n);
+    // void renderNreflectances(const hittable& world, int n);
 
 private:
     double aspect_ratio, H;
-    vec3 horizontal, vertical, origin, top_left, delta_u, delta_v, top_left_pixel;
+    vec3 camera_u, camera_v, origin, top_left, delta_u, delta_v, top_left_pixel, view_direction;
     colour background_colour;
     double &viewport_width = H;
     double &V = viewport_height;
-    double &F = focal_length;
+    vec3 defocus_disk_u, defocus_disk_v;
 
     void initialise();
     void compute_background_colour(ray const &lightray);
     colour image4shader(ray const &lightray, const hittable& obj);
     colour general_shader(ray const& lightray, hittable const & obj, int depth);
+    vec3 defocus_disk_sample() const;
 };
 
 /*---------------------------------------------
@@ -34,15 +41,24 @@ Definitions of member functions//
 
 void camera::initialise(){
     aspect_ratio = double (nx) / ny;
-    horizontal = vec3(viewport_height * aspect_ratio, 0, 0);
-    vertical = vec3(0, viewport_height, 0);
-    origin = vec3(0, 0, 0);
-    H = horizontal.length();
-    top_left = vec3(-H / 2, V / 2, -sqrt(F*F - (V/2)*(V/2) - (H/2)*(H/2)));
+    view_direction = (lookat - camera_origin).unit_vector();
+    // focal_length = (lookat - camera_origin).length();
 
-    delta_u = vec3(viewport_width / nx, 0, 0);
-    delta_v = vec3(0, viewport_height / ny, 0);
+    viewport_height = 2 * tan(degrees_to_radians(vfov) / 2) * focus_dist;
+    
+    camera_u = viewport_height * aspect_ratio * cross(view_direction, v_up).unit_vector();
+    camera_v = viewport_height * cross(camera_u, view_direction).unit_vector();
+    origin = vec3(0, 0, 0);
+    H = camera_u.length();
+    top_left = camera_origin + (-camera_u / 2 + camera_v / 2 + focus_dist * view_direction);
+
+    delta_u = camera_u / nx;
+    delta_v = camera_v / ny;
     top_left_pixel = top_left + 0.5 * delta_u + 0.5 * -delta_v;
+
+    double defocus_radius = focus_dist * tan(degrees_to_radians(defocus_angle / 2));
+    defocus_disk_u = cross(view_direction, v_up).unit_vector() * defocus_radius;
+    defocus_disk_v = cross(camera_u, view_direction).unit_vector() * defocus_radius;
 }
 
 void camera::compute_background_colour(ray const &lightray) {
@@ -56,37 +72,33 @@ void camera::render(const hittable& world){
     initialise();
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
+    ofstream time_data_file;
+    time_data_file.open("timedatafile.txt");
+    chrono::steady_clock::time_point start_time = chrono::high_resolution_clock::now();
+
     for (int j = 0; j < ny; j++){
+        auto time_elapsed = chrono::high_resolution_clock::now() - start_time;
+        double double_time_elapsed = time_elapsed.count();
+        std::clog << (j + 1) * 100 / ny  << "% Time elapsed: " << double_time_elapsed / 1000000000.0 << "s. Lines completed: " << j + 1 << "/" << ny << endl;
+
         for (int i = 0; i < nx; i++){
+            chrono::steady_clock::time_point begin_pixel_time = chrono::high_resolution_clock::now();
+
             colour pixel_colour(0, 0, 0);
             for (int n = 0; n < samples_per_pixel; n++){
                 vec3 offset = randomdouble(-0.5, +0.5) * delta_u + randomdouble(-0.5, +0.5) * delta_v;
-                ray cameraray(origin, top_left_pixel + i * delta_u + j * -delta_v - origin + offset);
+                vec3 ray_origin = (defocus_angle <= 0) ? camera_origin : defocus_disk_sample();
+                ray cameraray(ray_origin, top_left_pixel + i * delta_u + j * -delta_v - ray_origin + offset);
                 pixel_colour += general_shader(cameraray, world, max_depth);
             }
             pixel_colour /= samples_per_pixel;
             write_colour(pixel_colour);
+
+            time_data_file << (chrono::high_resolution_clock::now() - begin_pixel_time).count() << endl;
         }
     }
-}
-
-void camera::renderNreflectances(const hittable& world, int n){
-    initialise();
-    cout << "P3\n" << nx << " " << ny << "\n255\n";
-
-    for (int j = 0; j < ny; j++){
-        for (int i = 0; i < nx; i++){
-            colour pixel_colour(0, 0, 0);
-            reflectance = 0.1 + int(n * double(i) / nx) / double(n);
-            for (int n = 0; n < samples_per_pixel; n++){
-                vec3 offset = randomdouble(-0.5, +0.5) * delta_u + randomdouble(-0.5, +0.5) * delta_v;
-                ray cameraray(origin, top_left_pixel + i * delta_u + j * -delta_v - origin + offset);
-                pixel_colour += general_shader(cameraray, world, max_depth);
-            }
-            pixel_colour /= samples_per_pixel;
-            write_colour(pixel_colour);
-        }
-    }
+    time_data_file.close();
+    clog << "Done" << endl;
 }
 
 colour camera::general_shader(ray const& lightray, hittable const & obj, int depth){
@@ -129,6 +141,12 @@ colour camera::image4shader(ray const &lightray, const hittable& obj) {
     }
 
     return mix_colour(background_colour, objectcolour, hit);
+}
+
+vec3 camera::defocus_disk_sample() const {
+    // Returns a random point in the camera defocus disk.
+    vec3 p = vector_in_unit_disk();
+    return camera_origin + (p[0] * defocus_disk_u) + (p[1] * defocus_disk_v);
 }
 
 

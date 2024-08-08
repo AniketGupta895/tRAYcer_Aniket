@@ -1,11 +1,11 @@
 files = multiplesphere
 
 execute: $(files)
-	./image4 > sampleimages/sampleimage4.ppm
+	./main > sampleimages/final_render.ppm
 
-multiplesphere: multiplesphere.cpp
+main: main.cpp
 	echo "Compiling multiplesphere.cpp"
-	g++ -std=c++20 multiplesphere.cpp -o image4
+	g++ -std=c++20 main.cpp -o main
 
 tester: testvaluemaker.cpp
 	echo "Compiling testvaluemaker.cpp"

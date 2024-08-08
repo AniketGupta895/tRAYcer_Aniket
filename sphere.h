@@ -8,6 +8,7 @@ class sphere : public hittable{
 public: 
     sphere(vec3 Centre, double Radius, shared_ptr<material> mat): radius(Radius), centre(Centre), mat(mat) {};
     bool hit(ray const& lightray, interval ray_interval, hit_record& rec) const override;
+    // ~sphere() override = default;
 };
 
 
