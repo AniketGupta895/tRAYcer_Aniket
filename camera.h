@@ -17,7 +17,7 @@ public:
     double defocus_angle = 0;
     double focus_dist = 10;
 
-    void render(const hittable& world);
+    void render(const hittable& world, int portion_n);
     // void renderNreflectances(const hittable& world, int n);
 
 private:
@@ -68,15 +68,15 @@ void camera::compute_background_colour(ray const &lightray) {
     background_colour = mix_colour(background_colour1, background_colour2, scaled_y);
 }
 
-void camera::render(const hittable& world){
+void camera::render(const hittable& world, int portion_n){
     initialise();
-    cout << "P3\n" << nx << " " << ny << "\n255\n";
+    //cout << "P3\n" << nx << " " << ny << "\n255\n";
 
     ofstream time_data_file;
     time_data_file.open("timedatafile.txt");
     chrono::steady_clock::time_point start_time = chrono::high_resolution_clock::now();
 
-    for (int j = 0; j < ny; j++){
+    for (int j = (portion_n - 1) * ny / 10; j < (portion_n) * ny / 10; j++){
         auto time_elapsed = chrono::high_resolution_clock::now() - start_time;
         double double_time_elapsed = time_elapsed.count();
         std::clog << (j + 1) * 100 / ny  << "% Time elapsed: " << double_time_elapsed / 1000000000.0 << "s. Lines completed: " << j + 1 << "/" << ny << endl;

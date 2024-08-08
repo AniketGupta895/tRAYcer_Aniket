@@ -46,8 +46,8 @@ int main() {
 
     camera cam;
 
-    cam.samples_per_pixel = 3;
-    cam.max_depth         = 10;
+    cam.samples_per_pixel = 200;
+    cam.max_depth         = 20;
 
     cam.vfov     = 20;
     cam.camera_origin = point3(13,2,3);
@@ -57,5 +57,5 @@ int main() {
     cam.defocus_angle = 0.6;
     cam.focus_dist    = 10.0;
 
-    cam.render(world);
+    cam.render(world, 10);
 }
